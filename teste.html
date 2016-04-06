@@ -1,0 +1,138 @@
+<meta charset="utf-8">
+
+<input type="submit" id="apostar" value="Faça suas apostas!"/>
+
+<script>
+
+var sorteados = [];
+var acertos = [];
+var apostas = [];
+
+var setaRandom = function(posicao) {
+	sorteados[posicao] =  Math.floor((Math.random() * 60) + 1);
+}
+
+var pedeAposta = function(posicao) {
+	
+	var apostaErrada = true;
+	
+	while (apostaErrada)
+	{
+		var aposta = parseInt(prompt("Insira sua aposta #" + (posicao+1) + " - (de 1 até 60, por favor)"));
+		
+		if ( isNaN(aposta) ) {
+			alert("Isto não foi considerado como número!");
+			apostaErrada = true;
+			continue;
+		} 
+			
+		if ( aposta <= 0 || aposta > 60 ) {
+			alert("Isto não foi considerado como número permitido! - (de 1 até 60, por favor) |-- " + aposta + " --|");
+			apostaErrada = true;
+			continue;
+		}
+		
+		if (apostas.indexOf(aposta) >= 0) {
+			
+			alert("Número já apostado! (" + aposta +")");
+			apostaErrada = true;
+			
+		} else {
+			
+			apostas[posicao] = aposta;
+			apostaErrada = false;
+			
+		}
+
+	}
+	
+}
+
+var verificaApostas = function(posicao) {
+
+	if (sorteados.indexOf(apostas[posicao]) >= 0) {
+		acertos[posicao] = apostas[posicao];
+	}
+	
+}
+
+var repeteSeisVezes = function(x) {
+
+	for (i = 0; i < 6; i++) {
+		x(i);
+	}
+
+}
+
+var sorteiaNumeros = function() {
+	repeteSeisVezes(setaRandom);
+}
+
+var solicitaAposta = function() {
+	repeteSeisVezes(pedeAposta);
+}
+
+var mostraNumerosSorteados = function() {
+	document.write("<b>Números sorteados</b>");
+	repeteSeisVezes(imprimeNumeroSorteado);
+}
+
+var mostraNumerosSorteados = function() {
+	document.write("<b>Números sorteados</b>");
+	document.write("<br/>");
+	repeteSeisVezes(imprimeNumeroSorteado);
+}
+
+var imprimeNumeroSorteado = function(posicao) {
+	document.write("<br/>" + sorteados[posicao] + "<br/>")
+}
+
+var mostraResultado = function() {
+
+	document.write("<hr/>");
+	
+	document.write("Você acertou <b>" + acertos.length + "</b> números.");
+	
+	document.write("<br/>");
+	
+	repeteSeisVezes(imprimeNumeroApostado);
+	
+
+}
+
+var imprimeNumeroApostado = function(posicao) {
+
+	var destaqueAcerto = false;
+
+	if (acertos.indexOf(apostas[posicao]) >= 0) {
+		destaqueAcerto = true;
+	}
+
+	document.write("<br/>");
+	if (destaqueAcerto) document.write("<b>");
+	document.write(apostas[posicao]);
+	if (destaqueAcerto) document.write("</b>");
+	document.write("<br/>");
+	
+}
+
+var apostar = function() {
+
+	sorteiaNumeros();		
+	
+	console.log(sorteados);
+	
+	solicitaAposta();
+	
+	mostraNumerosSorteados();
+	
+	mostraResultado();
+	
+	
+};
+
+var botaoAdivinhar = document.getElementById("apostar");
+botaoAdivinhar.onclick = apostar;
+
+
+</script>
